@@ -14,10 +14,13 @@ interface IMineOptions {
   account: string;
 }
 const tick = "ethpi";
+let lastNonce:any=undefined;
 let unique = 0;
 let toMintBlockNumber = 0;
+let totalMintCount=0;
 export const runMintPow = async (workc: string, options: IMineOptions) => {
 
+  try{
   unique=0;
   sayMinerLog();
   toMintBlockNumber = 0;
@@ -48,13 +51,22 @@ This mining user configuration was not found!
     miner.getTransactionCount(),
     miner.getBalance(),
   ]);
+
+  if(lastNonce==undefined)
+  {
+    lastNonce=nonce
+  }else{
+    lastNonce=lastNonce+1
+  }
+
   printer.trace(`network is ${network.name} (chainID: ${network.chainId})`);
   const targetGasFee = currentGasPrice.div(100).mul(GAS_PREMIUM);
 
   printer.trace(`Current gas price usage ${bnUtils.fromWei(targetGasFee.toString(), 9)} gwei`);
-  printer.trace(`nonce is ${nonce}`);
+  printer.trace(`nonce is ${lastNonce}`);
   printer.trace(`balance is ${bnUtils.fromWei(balance.toString(), 18).dp(4).toString()}`);
 
+  printer.info(`totalSuccessMint is ${totalMintCount}`);
   const spinnies = new Spinnies();
   printer.trace(`The current mining difficulty is ${workc}`);
   printer.trace(`Expected to take 1-2 minutes to calculate...`);
@@ -76,7 +88,7 @@ This mining user configuration was not found!
       maxPriorityFeePerGas: targetGasFee,
       maxFeePerGas: targetGasFee,
       gasLimit: ethers.BigNumber.from("25000"),
-      nonce: nonce,
+      nonce: lastNonce,
       value: ethers.utils.parseEther("0"),
       data: stringToHex(
         `data:application/json,${JSON.stringify({
@@ -138,12 +150,17 @@ This mining user configuration was not found!
       const realTransaction = await miner.sendTransaction(transaction);
       // console.log("🚀 ~ realTransaction:", realTransaction)
       printer.info(`mining hash: ${realTransaction.hash}`);
-      await realTransaction.wait();
+     // await realTransaction.wait();
 
        printer.info("mining success");
+       totalMintCount=totalMintCount+1;
+
        break;
     }
   }
-
+}catch(ex)
+{
+  console.log('执行异常：',ex)
+}
  await runMintPow(workc,options)
 };
