@@ -17,7 +17,10 @@ const tick = "ethpi";
 let unique = 0;
 let toMintBlockNumber = 0;
 export const runMintPow = async (workc: string, options: IMineOptions) => {
+
+  unique=0;
   sayMinerLog();
+  toMintBlockNumber = 0;
   if (!(workc.length >= 6 && workc.length <= 22 && ethers.utils.isHexString(workc))) {
     throw new Error("The workc is invalid");
   }
@@ -121,7 +124,7 @@ This mining user configuration was not found!
           text: `The current block height is ${currentBlockNumber}, the expected block height is ${toMintBlockNumber}, the difference is too large, and the mining is stopped.`,
           color: "red",
         });
-        return;
+        break;
       }
       spinnies.succeed("mining", {
         text: `${mineCount} - ${predictedTransactionHash}`,
@@ -137,7 +140,10 @@ This mining user configuration was not found!
       printer.info(`mining hash: ${realTransaction.hash}`);
       await realTransaction.wait();
 
-      return printer.info("mining success");
+       printer.info("mining success");
+       break;
     }
   }
+
+ await runMintPow(workc,options)
 };
