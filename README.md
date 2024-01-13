@@ -1,3 +1,5 @@
+挖矿修改，取消挖矿一张自动停止限制，改为一直挖到没有gas为止
+
 1、npm i -g yarn
 
 2、yarn install
