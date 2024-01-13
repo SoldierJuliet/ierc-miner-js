@@ -7,4 +7,5 @@
 4、yarn cli mint-pow 0x0000 --account 钱包地址
 
 加入社区DC服务器了解最新动态：https://discord.gg/xBt2FUAy
+
 关注炮哥推特支持炮哥：https://twitter.com/HindsightKOL
