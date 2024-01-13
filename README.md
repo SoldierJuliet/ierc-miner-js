@@ -12,6 +12,7 @@
 4、yarn cli mint-pow 0x0000 --account 钱包地址
 
 建议挖5个0的，4个0，我挖了10刀，才2张，这算什么事啊
+
 5、yarn cli mint-pow 0x00000 --account 钱包地址 
 
 加入社区DC服务器了解最新动态：https://discord.gg/xBt2FUAy
